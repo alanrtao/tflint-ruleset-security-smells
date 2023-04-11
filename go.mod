@@ -1,4 +1,4 @@
-module github.com/terraform-linters/tflint-ruleset-template
+module github.com/alanrtao/security-smells-ruleset
 
 go 1.20
 
