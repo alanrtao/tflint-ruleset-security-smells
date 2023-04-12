@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/alanrtao/security-smells-ruleset/rules"
+	"tflint-ruleset-smells/rules"
+
 	"github.com/terraform-linters/tflint-plugin-sdk/plugin"
 	"github.com/terraform-linters/tflint-plugin-sdk/tflint"
 )

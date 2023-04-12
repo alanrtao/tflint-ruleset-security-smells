@@ -1,4 +1,4 @@
-module github.com/alanrtao/security-smells-ruleset
+module tflint-ruleset-smells
 
 go 1.20
 

@@ -36,38 +36,38 @@ func (r *SecuritySmellsTypeRule) Link() string {
 }
 
 /* Rule body */
-
 func (r *SecuritySmellsTypeRule) Check(runner tflint.Runner) error {
-	// This rule is an example to get attributes of blocks other than resources.
-	content, err := runner.GetModuleContent(&hclext.BodySchema{
+	path, err := runner.GetModulePath()
+	if err != nil {
+		return err
+	}
+	if !path.IsRoot() {
+		// This rule does not evaluate child modules.
+		return nil
+	}
+
+	body, err := runner.GetModuleContent(&hclext.BodySchema{
 		Blocks: []hclext.BlockSchema{
 			{
-				Type: "terraform",
+				Type:       "variable",
+				LabelNames: []string{"name"},
 				Body: &hclext.BodySchema{
-					Blocks: []hclext.BlockSchema{
-						{
-							Type:       "backend",
-							LabelNames: []string{"type"},
-						},
-					},
+					Attributes: []hclext.AttributeSchema{{Name: "type"}},
 				},
 			},
 		},
-	}, nil)
+	}, &tflint.GetModuleContentOption{ExpandMode: tflint.ExpandModeNone})
 	if err != nil {
 		return err
 	}
 
-	for _, terraform := range content.Blocks {
-		for _, backend := range terraform.Body.Blocks {
-			err := runner.EmitIssue(
-				r,
-				fmt.Sprintf("backend type is %s", backend.Labels[0]),
-				backend.DefRange,
-			)
-			if err != nil {
-				return err
-			}
+	for _, variable := range body.Blocks {
+		if err := runner.EmitIssue(
+			r,
+			fmt.Sprintf("`%v` variable detected by plugin", variable.Labels[0]),
+			variable.DefRange,
+		); err != nil {
+			return err
 		}
 	}
 

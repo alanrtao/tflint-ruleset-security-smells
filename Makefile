@@ -8,4 +8,4 @@ build:
 
 install: build
 	mkdir -p ~/.tflint.d/plugins
-	mv ./security-smells-ruleset ~/.tflint.d/plugins
+	mv ./tflint-ruleset-smells ~/.tflint.d/plugins
