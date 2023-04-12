@@ -1,4 +1,4 @@
-module tflint-ruleset-smells
+module github.com/alanrtao/tflint-ruleset-secsmells
 
 go 1.20
 
