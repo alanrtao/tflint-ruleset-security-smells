@@ -6,6 +6,6 @@ plugin "terraform" {
 	enabled=false
 }
 
-plugin "smells" {
+plugin "secsmells" {
 	enabled=true
 }
