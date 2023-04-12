@@ -1,5 +1,5 @@
 config {
-	
+	varfile = ["terraform.tfvars"]
 }
 
 plugin "terraform" {
