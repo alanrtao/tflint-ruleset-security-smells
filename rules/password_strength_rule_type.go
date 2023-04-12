@@ -41,29 +41,30 @@ func (r *PasswordStrengthRuleType) Link() string {
 func (r *PasswordStrengthRuleType) Check(runner tflint.Runner) error {
 
 	var cache = map[string]string{}
+	// todo: also check for duplicate password by having an inverse map from password values to password names
 
 	runner.WalkExpressions(tflint.ExprWalkFunc(func(expr hcl.Expression) hcl.Diagnostics {
 
 		// get expression string from file
-		eRange := expr.Range()
-		eFile := expr.Range().Filename
+		exprRange := expr.Range()
+		exprFile := expr.Range().Filename
 
-		file, err := runner.GetFile(eFile)
+		file, err := runner.GetFile(exprFile)
 		if err != nil {
 			// todo: return diag instead
 			return nil
 		}
-		plainText := string(file.Bytes[eRange.Start.Byte:eRange.End.Byte])
-		plainTextLower := strings.ToLower(plainText)
+		exprPlainText := string(file.Bytes[exprRange.Start.Byte:exprRange.End.Byte])
+		exprPlainTextLower := strings.ToLower(exprPlainText)
 
 		// skip if expression not about password
-		if !(strings.Contains(plainTextLower, "password") ||
-			strings.Contains(plainTextLower, "pass") ||
-			strings.Contains(plainTextLower, "pwd")) {
+		if !(strings.Contains(exprPlainTextLower, "password") ||
+			strings.Contains(exprPlainTextLower, "pass") ||
+			strings.Contains(exprPlainTextLower, "pwd")) {
 			return nil
 		}
 
-		prevVal, exists := cache[plainText]
+		prevVal, exists := cache[exprPlainText]
 		if exists {
 			return nil
 		}
@@ -77,7 +78,7 @@ func (r *PasswordStrengthRuleType) Check(runner tflint.Runner) error {
 			return nil
 		}
 		// write to cache
-		cache[plainText] = prevVal
+		cache[exprPlainText] = prevVal
 
 		// skip if expression hard coded, not handled by this rule
 		variables := expr.Variables()
@@ -95,7 +96,7 @@ func (r *PasswordStrengthRuleType) Check(runner tflint.Runner) error {
 		}
 
 		runner.EmitIssue(
-			r, value+"@"+plainText+" not strong enough", expr.StartRange(),
+			r, exprPlainText+" must be at least 8 characters long with capitalized and non-capitalized letters, digits, and special characters", expr.StartRange(),
 		)
 
 		return nil
