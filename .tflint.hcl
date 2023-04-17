@@ -1,11 +1,15 @@
+// ------ BEGIN DEMO SECTION -------
 config {
 	varfile = ["terraform.tfvars"]
 }
 
+
 plugin "terraform" {
 	enabled=false
 }
+// ------ END DEMO SECTION ---------
 
+// ------ RELEVANT PLUGIN CONFIG ---
 plugin "secsmells" {
 	enabled = true
 	version = "0.1.0"

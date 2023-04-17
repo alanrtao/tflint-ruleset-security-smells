@@ -1,66 +1,21 @@
-# TFLint Ruleset Template
-[![Build Status](https://github.com/terraform-linters/tflint-ruleset-template/workflows/build/badge.svg?branch=main)](https://github.com/terraform-linters/tflint-ruleset-template/actions)
-
-This is a template repository for building a custom ruleset. You can create a plugin repository from "Use this template". See also [Writing Plugins](https://github.com/terraform-linters/tflint/blob/master/docs/developer-guide/plugins.md).
-
 ## Requirements
 
 - TFLint v0.40+
 - Go v1.20
 
 ## Installation
+- Install [`tflint`](https://github.com/terraform-linters/tflint#installation) and run `tflint --init` within your Terraform project repository
 
-TODO: This template repository does not contain release binaries, so this installation will not work. Please rewrite for your repository. See the "Building the plugin" section to get this template ruleset working.
-
-You can install the plugin with `tflint --init`. Declare a config in `.tflint.hcl` as follows:
-
-```hcl
-plugin "template" {
-  enabled = true
-
-  version = "0.1.0"
-  source  = "github.com/terraform-linters/tflint-ruleset-template"
-
-  signing_key = <<-KEY
-  -----BEGIN PGP PUBLIC KEY BLOCK-----
-  mQINBGCqS2YBEADJ7gHktSV5NgUe08hD/uWWPwY07d5WZ1+F9I9SoiK/mtcNGz4P
-  JLrYAIUTMBvrxk3I+kuwhp7MCk7CD/tRVkPRIklONgtKsp8jCke7FB3PuFlP/ptL
-  SlbaXx53FCZSOzCJo9puZajVWydoGfnZi5apddd11Zw1FuJma3YElHZ1A1D2YvrF
-  ...
-  KEY
-}
-```
+## Usage
+- Move the `.tflint.hcl` file from this repository to your Terraform project repository
+  - Some sections in the config file are purely for demo purposes, you can remove them
+  - Specific rules within the plugin (see [`/rules`](/rules) or alternatively [main.go](main.go)) can be enabled or disabled manually
+- `tflint`
+> For more information refer to [Terraform documentation](https://github.com/terraform-linters/tflint#getting-started)
 
 ## Rules
-
-|Name|Description|Severity|Enabled|Link|
-| --- | --- | --- | --- | --- |
-|aws_instance_example_type|Example rule for accessing and evaluating top-level attributes|ERROR|✔||
-|aws_s3_bucket_example_lifecycle_rule|Example rule for accessing top-level/nested blocks and attributes under the blocks|ERROR|✔||
-|google_compute_ssl_policy|Example rule with a custom rule config|WARNING|✔||
-|terraform_backend_type|Example rule for accessing other than resources|ERROR|✔||
-
-## Building the plugin
-
-Clone the repository locally and run the following command:
-
-```
-$ make
-```
-
-You can easily install the built plugin with the following:
-
-```
-$ make install
-```
-
-You can run the built plugin like the following:
-
-```
-$ cat << EOS > .tflint.hcl
-plugin "template" {
-  enabled = true
-}
-EOS
-$ tflint
-```
+- No hardcoded secret: `variable` files with password-like names should not have default values set
+- Password strength rule: 
+  - Any expression containing password-like elements should evaluate to a string that:
+    - Is at least 8 characters long
+    - Contains capital & lower alphabet, digits, and special characters
