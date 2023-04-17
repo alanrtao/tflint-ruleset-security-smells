@@ -12,8 +12,8 @@ func main() {
 			Name:    "Security Smells Linter Ruleset",
 			Version: "0.1.0",
 			Rules: []tflint.Rule{
-				// rules.NewPasswordStrengthRuleType(),
-				// rules.NewNoHardcodedSecretRuleType(),
+				rules.NewPasswordStrengthRuleType(),
+				rules.NewNoHardcodedSecretRuleType(),
 				rules.NewInvalidIPAddressBindingRuleType(),
 			},
 		},
