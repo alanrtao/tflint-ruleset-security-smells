@@ -23,3 +23,4 @@
         -   Is at least 8 characters long
         -   Contains capital & lower alphabet, digits, and special characters
         -   Is IP Address '0.0.0.0'
+- checks whether URLs use HTTP without TLS (i.e., not HTTPS)
