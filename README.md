@@ -14,13 +14,14 @@
     -   Specific rules within the plugin (see [`/rules`](/rules) or alternatively [main.go](main.go)) can be enabled or disabled manually
 -   `tflint`
     > For more information refer to [Terraform documentation](https://github.com/terraform-linters/tflint#getting-started)
+  - `--no-color` makes the output compatible to plain textlogs such as in Jenkins
 
 ## Rules
 
--   No hardcoded secret: `variable` files with password-like names should not have default values set
--   Password strength rule:
-    -   Any expression containing password-like elements should evaluate to a string that:
-        -   Is at least 8 characters long
-        -   Contains capital & lower alphabet, digits, and special characters
-        -   Is IP Address '0.0.0.0'
-- checks whether URLs use HTTP without TLS (i.e., not HTTPS)
+- No Hardcoded Secret: `variable` files with password-like names should not have default values set
+- Password Strength:
+  - Any expression containing password-like elements should evaluate to a string that:
+    - Is at least 8 characters long
+    - Contains capital & lower alphabet, digits, and special characters
+- Invalid IP Address Binding: checks whether IP Address is '0.0.0.0'
+- HTTP without TLS: checks whether URLs use HTTP without TLS (i.e., not HTTPS)
